@@ -1,15 +1,26 @@
-
 class MoviesController < ApplicationController
-  before_action :set_movie, only: %i[show edit update destroy]
+  before_action :set_movie, only: %i[ show edit update destroy ]
 
   # GET /movies or /movies.json
   def index
-    if params[:sort_by] && Movie.column_names.include?(params[:sort_by])
-      @movies = Movie.order(params[:sort_by])
-    else
-      @movies = Movie.all
+    @movies = Movie.all
+  
+    case params[:sort]
+    when 'title'
+      @movies = @movies.order(title: sort_direction)
+    when 'rating'
+      @movies = @movies.order(rating: sort_direction)
+    when 'release_date'
+      @movies = @movies.order(release_date: sort_direction)
     end
   end
+  
+  private
+  
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
+  end
+  
 
   # GET /movies/1 or /movies/1.json
   def show
