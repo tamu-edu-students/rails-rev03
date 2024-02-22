@@ -4,23 +4,7 @@ class MoviesController < ApplicationController
   # GET /movies or /movies.json
   def index
     @movies = Movie.all
-  
-    case params[:sort]
-    when 'title'
-      @movies = @movies.order(title: sort_direction)
-    when 'rating'
-      @movies = @movies.order(rating: sort_direction)
-    when 'release_date'
-      @movies = @movies.order(release_date: sort_direction)
-    end
   end
-  
-  private
-  
-  def sort_direction
-    %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
-  end
-  
 
   # GET /movies/1 or /movies/1.json
   def show
